@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import personService from './services/persons'
+import './index.css'
 
 const App = () => {
     const [persons, setPersons] = useState([])
@@ -7,6 +8,7 @@ const App = () => {
     const [newNumber, setNewNumber] = useState('')
     const [filter, setFilter] = useState('')
     const [filteredPersons, setFilteredPersons] = useState([]);
+    const [errorMessage, setErrorMessage] = useState(null)
 
     useEffect(() => {
         personService
@@ -22,24 +24,31 @@ const App = () => {
 
     const addNumber = (event) => {
         event.preventDefault();
-        const person = { name: newName, number: newNumber };
+        const person = { name: newName, number: newNumber }
     
-        const existingPerson = persons.find(p => p.name === newName);
+        const existingPerson = persons.find(p => p.name === newName)
         if (existingPerson) {
             if (window.confirm(`${newName} is already added to the phonebook. Replace the old number with a new one?`)) {
                 personService
                     .update(existingPerson.id, person)
                     .then(updatedPerson => {
-                        setPersons(persons.map(p => p.id === updatedPerson.id ? updatedPerson : p));
-                        setNewName('');
-                        setNewNumber('');
+                        setPersons(persons.map(p => p.id === updatedPerson.id ? updatedPerson : p))
+                        setNewName('')
+                        setNewNumber('')
+                        setErrorMessage({message:`Updated ${updatedPerson.name}`, color:'green'})
+                        setTimeout(() => {setErrorMessage(null)}, 5000)
                     })
+                    .catch(error => {
+                        setErrorMessage({message:`Information of ${person.name} has alredy been removed from server`, color:'red' })
+                    });
             }
         } else {
             personService.create(person).then(newPerson => {    
-                setPersons([...persons, newPerson]);
-                setNewName('');
-                setNewNumber('');
+                setPersons([...persons, newPerson])
+                setNewName('')
+                setNewNumber('')
+                setErrorMessage({message:`Added ${newPerson.name}`, color:'green'})
+                setTimeout(() => {setErrorMessage(null)}, 5000)
             });
         }
     }
@@ -63,14 +72,17 @@ const App = () => {
             personService
                 .del(person.id)
                 .then(() => { 
-                    const updatedPersons = persons.filter(p => p.id !== person.id);
-                    setPersons(updatedPersons);
+                    const updatedPersons = persons.filter(p => p.id !== person.id)
+                    setPersons(updatedPersons)
+                    setErrorMessage({message:`Deleted ${person.name}`, color:'green'})
+                    setTimeout(() => {setErrorMessage(null)}, 5000)
                 })
         }
     }
 
     return (
         <div>
+            <Notification error={errorMessage} />
             <h2>Phonebook</h2>
             <Filter value={filter} onChange={handleFilterChange}/>
 
@@ -128,5 +140,17 @@ const Persons = (props) => (
         )}
     </div>
 )
+
+const Notification = ({ error }) => {
+    if (error === null) {
+      return null
+    }
+  
+    return (
+      <div className="error" style={{color:error.color}}>
+        {error.message}
+      </div>
+    )
+}
 
 export default App
