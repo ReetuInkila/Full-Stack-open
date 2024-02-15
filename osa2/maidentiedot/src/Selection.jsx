@@ -30,8 +30,8 @@ const Selection = (props) => {
         return(
             <div>
                 {filteredCountries.map((c, i) => 
-                    <div>
-                        <p key={i}>{c.name.common}</p><button onClick={() => handleSelect(c)}>show</button>
+                    <div key={i}>
+                        <p>{c.name.common}</p><button onClick={() => handleSelect(c)}>show</button>
                     </div>
                 )}
             </div>
