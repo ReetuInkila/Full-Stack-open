@@ -1,4 +1,5 @@
-import React from 'react';
+import React from 'react'
+import Weather from './Weather'
 
 const Country = (props) => {
     return (
@@ -13,6 +14,7 @@ const Country = (props) => {
                 ))}
             </ul>
             <img style={{width:'200px'}} src={props.country.flags.svg} />
+            <Weather capital={props.country.capital[0]} coods={props.country.capitalInfo.latlng}/>
         </div>
     );
 };

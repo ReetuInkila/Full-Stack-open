@@ -3,28 +3,39 @@ import Country from './Country'
 
 const Selection = (props) => {
     const [filteredCountries, setFilteredCountries] = useState(props.countries);
+    const[selecteCountry, setSelectedCountry] = useState(null);
 
 
     useEffect(() => {
         const filtered = props.countries.filter(country => country.name.common.toUpperCase().includes(props.filter.toUpperCase()));
         setFilteredCountries(filtered);
 
-        console.log(filtered, props.filter)
+        if(filtered.length==1){
+            setSelectedCountry(filtered[0])
+        }else{
+            setSelectedCountry(null)
+        }
     }, [props.filter])
 
+    const handleSelect = (country) => { 
+        setSelectedCountry(country)
+    }
 
-    if(filteredCountries.length>10){
+
+    if(selecteCountry){
+        return <Country country={selecteCountry}/>
+    }else if(filteredCountries.length>10){
         return <p>Too many matches, specify another filter</p>
     }else if(filteredCountries.length>1){
         return(
             <div>
                 {filteredCountries.map((c, i) => 
-                    <p key={i}>{c.name.common}</p>
+                    <div>
+                        <p key={i}>{c.name.common}</p><button onClick={() => handleSelect(c)}>show</button>
+                    </div>
                 )}
             </div>
         )
-    }else if(filteredCountries.length==1){
-        return <Country country={filteredCountries[0]}/>
     }
 
 }
