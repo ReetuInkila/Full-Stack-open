@@ -39,7 +39,8 @@ const App = () => {
                         setTimeout(() => {setErrorMessage(null)}, 5000)
                     })
                     .catch(error => {
-                        setErrorMessage({message:`Information of ${person.name} has alredy been removed from server`, color:'red' })
+                        setErrorMessage({message: error.response.data.error, color:'red' })
+                        setTimeout(() => {setErrorMessage(null)}, 5000)
                     });
             }
         } else {
@@ -48,6 +49,10 @@ const App = () => {
                 setNewName('')
                 setNewNumber('')
                 setErrorMessage({message:`Added ${newPerson.name}`, color:'green'})
+                setTimeout(() => {setErrorMessage(null)}, 5000)
+            })
+            .catch(error => {
+                setErrorMessage({message: error.response.data.error, color:'red' })
                 setTimeout(() => {setErrorMessage(null)}, 5000)
             });
         }
