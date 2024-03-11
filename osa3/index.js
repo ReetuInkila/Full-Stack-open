@@ -64,12 +64,6 @@ app.get('/api/persons/:id', (request, response, next) => {
 app.post('/api/persons', (request, response, next) => {
     const body = request.body
   
-    if (!body.number) {
-      return response.status(400).json({ 
-        error: 'Number missing' 
-      })
-    }
-  
     const person = new Person({
       name: body.name,
       number: body.number
@@ -91,12 +85,6 @@ app.delete('/api/persons/:id', (request, response, next) => {
 
 app.put('/api/persons/:id', (request, response, next) => {
     const body = request.body
-
-    if (!body.number) {
-        return response.status(400).json({ 
-          error: 'Number missing' 
-        })
-    }
   
     const person = {
         name: body.name,
