@@ -26,7 +26,7 @@ if(!process.argv[3]){
     Person.find({}).then(result => {
         console.log('phonebook:')
         result.forEach(note => {
-          console.log(`${note.name} ${note.number}`)
+            console.log(`${note.name} ${note.number}`)
         })
         mongoose.connection.close()
     })
@@ -35,11 +35,10 @@ if(!process.argv[3]){
         name: process.argv[3],
         number: process.argv[4]
     })
-    person.save().then(result => {
+    person.save().then(() => {
         console.log('person saved!')
         mongoose.connection.close()
     })
-
 }else(
     mongoose.connection.close()
 )
