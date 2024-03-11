@@ -1,2 +1,2 @@
-Puhelinluettelo backend
-https://full-stack-open-szud.onrender.com/
+Puhelinluettelo webapp
+https://full-stack-open-szud.onrender.com
