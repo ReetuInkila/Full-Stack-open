@@ -37,7 +37,9 @@ app.use(express.json())
 
 
 app.get('/info', (request, response) => {
-    response.send(`<p>Phonebook has info for ${persons.length} people</p><p>${new Date()}</p>`)
+    Person.find({}).then(result => {
+        response.send(`<p>Phonebook has info for ${result.length} people</p><p>${new Date()}</p>`)
+    })
 })
 
 app.get('/api/persons', (request, response) => {
