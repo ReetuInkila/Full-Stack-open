@@ -93,9 +93,31 @@ describe('blogs api test', () => {
         
         assert.strictEqual(res.body.likes, 0)
     });
-    
-      
 
+    test('returns 400 Bad Request if url or title is missing', async () => {
+        let newBlog = {
+            title: 'Test Blog',
+            author: 'Test Author',
+            likes: 5
+        }
+
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(400)
+
+        newBlog = {
+            author: 'Test Author',
+            url: 'https://testurl.com',
+            likes: 5
+        }
+    
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(400)
+    })
+    
     after(async () => {
         await mongoose.connection.close()
     })
