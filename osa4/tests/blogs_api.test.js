@@ -85,7 +85,7 @@ describe('blogs api test', () => {
             url: "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html"
         }
 
-        const res =await api
+        const res = await api
           .post('/api/blogs')
           .send(newBlog)
           .expect(201)
@@ -116,6 +116,28 @@ describe('blogs api test', () => {
             .post('/api/blogs')
             .send(newBlog)
             .expect(400)
+    })
+
+    test('blog can be deleted', async () => {
+        await api
+            .delete('/api/blogs/5a422a851b54a676234d17f7')
+            .expect(204)
+
+        const response = await api.get('/api/blogs')
+        assert.strictEqual(response.body.length, 1)
+    })
+
+    test('blog likes can be updated', async () => {
+        const newBlog = {
+            likes: 5,
+        }
+
+        const res = await api
+            .put('/api/blogs/5a422a851b54a676234d17f7')
+            .send(newBlog)
+            .expect(200)
+
+        assert.strictEqual(res.body.likes, 5)
     })
     
     after(async () => {
