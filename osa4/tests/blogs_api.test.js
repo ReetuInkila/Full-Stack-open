@@ -77,6 +77,23 @@ describe('blogs api test', () => {
       
         assert.strictEqual(response.body.length, initialBlogs.length + 1)
     })
+
+    test('if likes field is not provided, it is automatically set to 0', async () => {
+        const newBlog = {
+            title: "TDD harms architecture",
+            author: "Robert C. Martin",
+            url: "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html"
+        }
+
+        const res =await api
+          .post('/api/blogs')
+          .send(newBlog)
+          .expect(201)
+          .expect('Content-Type', /application\/json/)
+        
+        assert.strictEqual(res.body.likes, 0)
+    });
+    
       
 
     after(async () => {
