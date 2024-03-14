@@ -29,7 +29,7 @@ const userExtractor = async (request, response, next) => {
         if (decodedToken.id) {
             request.user = await User.findById(decodedToken.id)
         } 
-    }   
+    }
     next()
 }
 
